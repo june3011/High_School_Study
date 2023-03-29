@@ -26,6 +26,9 @@ app.get("/students", (req, res) => {
 app.get("/", (req, res) => {
   res.send("hi");
 });
-app.listen("5006", () => {
-  console.log("5006listening");
+app.get("/asd", (req, res) => {
+  res.send("asd");
+});
+app.listen("3307", () => {
+  console.log("3307listening");
 });
