@@ -7,5 +7,5 @@
  */
 
 let v1 = 1;
-let v2 = 2;
-let v3 = 3;
+var v2 = 2;
+const v3 = 3;
