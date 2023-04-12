@@ -1,25 +1,51 @@
 import * as S from "./style";
+import { useGetStudentsQuery } from "../../queries/student/student.query";
+import { useNavigate } from "react-router";
+import useDelete from "../../hooks/useDelete";
 
 const List = () => {
+  const navigate = useNavigate();
+  const { data: studentData } = useGetStudentsQuery();
+  const { onDelete } = useDelete();
   return (
-    <S.ListContainer>
-      <S.ListTr>
-        <S.ListTh>id</S.ListTh>
-        <S.ListTh>이름</S.ListTh>
-        <S.ListTh>나이</S.ListTh>
-        <S.ListBtnTh></S.ListBtnTh>
-        <S.ListBtnTh></S.ListBtnTh>
-      </S.ListTr>
-      <S.ListTr>
-        <S.ListTd>더미아이디</S.ListTd>
-        <S.ListTd>더미이름</S.ListTd>
-        <S.ListTd>더미나이</S.ListTd>
-        <S.TdButtonWrap>
-          <S.ListBtnTd TdButtonType="modify">수정</S.ListBtnTd>
-          <S.ListBtnTd TdButtonType="cancle">삭제</S.ListBtnTd>
-        </S.TdButtonWrap>
-      </S.ListTr>
-    </S.ListContainer>
+    <>
+      <S.ListContainer>
+        <S.ListTr>
+          <S.ListTh>id</S.ListTh>
+          <S.ListTh>이름</S.ListTh>
+          <S.ListTh>나이</S.ListTh>
+          <S.ListBtnTh></S.ListBtnTh>
+          <S.ListBtnTh></S.ListBtnTh>
+        </S.ListTr>
+        {studentData &&
+          studentData?.map((student) => {
+            return (
+              <S.ListTr key={student.id}>
+                <S.ListTd>{student.id}</S.ListTd>
+                <S.ListTd>{student.name}</S.ListTd>
+                <S.ListTd>{student.age}</S.ListTd>
+                <S.TdButtonWrap>
+                  <S.ListBtnTd
+                    TdButtonType="modify"
+                    onClick={() => navigate(`/modify/${student.id}`)}
+                  >
+                    수정
+                  </S.ListBtnTd>
+                  <S.ListBtnTd
+                    TdButtonType="cancle"
+                    onClick={() => {
+                      onDelete(student.id);
+                      location.reload();
+                    }}
+                  >
+                    삭제
+                  </S.ListBtnTd>
+                </S.TdButtonWrap>
+              </S.ListTr>
+            );
+          })}
+      </S.ListContainer>
+    </>
   );
 };
 

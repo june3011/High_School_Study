@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  deleteStudentByIdParam,
   patchEditStudentParam,
   postRegisterStudentParam,
 } from "./studentRepository.param";
@@ -13,14 +14,25 @@ class StudentRepository {
   }
 
   public async postRegisterStudent({
-    id,
     name,
     age,
   }: postRegisterStudentParam): Promise<void> {
-    await axios.post("127.0.0.1:3307/student/register", { id, name, age });
+    await axios.post(`${config.SERVER}/student/register`, { name, age });
   }
 
-  public async patchEditStudent({}: patchEditStudentParam): Promise<void> {
-    await axios.patch("127.0.0.1:3307");
+  public async patchEditStudent({
+    id,
+    name,
+    age,
+  }: patchEditStudentParam): Promise<void> {
+    await axios.patch(`${config.SERVER}/student/edit`, { id, name, age });
+  }
+
+  public async deleteStudentById({
+    id,
+  }: deleteStudentByIdParam): Promise<void> {
+    await axios.delete(`${config.SERVER}/student/delete?id=${id}`);
   }
 }
+
+export default new StudentRepository();

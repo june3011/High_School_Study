@@ -1,5 +1,7 @@
 const express = require("express");
 const mysql = require("mysql");
+const cors = require("cors");
+const bodyParser = require("body-parser");
 
 const pool = mysql.createPool({
   host: "127.0.0.1",
@@ -9,16 +11,22 @@ const pool = mysql.createPool({
 });
 
 const app = express();
+app.use(cors());
+app.use(bodyParser.json());
 
 app.get("/students/list", (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
       console.log("유저 리스트 조회 중 에러");
+      console.log(err);
       throw err;
     }
 
     connection.query("SELECT * from students", (error, rows, fields) => {
-      if (error) throw error;
+      if (error) {
+        console.log(error);
+        throw error;
+      }
       console.log("유저 리스트 조회 성공");
       console.log("User info is : ", rows);
       res.send(rows);
@@ -35,7 +43,7 @@ app.delete("/student/delete", (req, res) => {
       throw err;
     }
 
-    const { id } = req.body;
+    const { id } = req.query;
 
     if (!id) {
       console.log("삭제에 필요한 id가 존재하지 않습니다.");
@@ -59,24 +67,24 @@ app.post("/student/register", (req, res) => {
       throw err;
     }
 
-    const { id, name, age } = req.body;
+    const { name, age } = req.body;
 
-    if ((!id || !name, !age)) {
+    if ((!name, !age)) {
       console.log("등록에 필요한 정보가 부족합니다.");
     }
 
     connection.query(
-      `INSERT INTO students(id, name, age) VALUES(${id}, ${name}, ${age})`,
+      `INSERT INTO students(name, age) VALUES("${name}", ${age})`,
       (error, rows, fields) => {
         if (error) throw error;
         console.log("유저 등록 성공");
-        console.log(`id=${id}, name=${name}, age=${age} 인 유저 등록 성공`);
+        console.log(`name=${name}, age=${age} 인 유저 등록 성공`);
       }
     );
   });
 });
 
-app.patch("/student/edit/${id}", (req, res) => {
+app.patch(`/student/edit`, (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
       console.log("유저 수정 중 에러");
@@ -90,7 +98,11 @@ app.patch("/student/edit/${id}", (req, res) => {
     }
 
     connection.query(
-      `UPDATE students SET name=${name}, age=${age} WHERE id=${id}`
+      `UPDATE students SET name="${name}", age=${age} WHERE id=${id}`,
+      (error, rows, fields) => {
+        if (error) throw error;
+        console.log("유저 정보 수정 성공");
+      }
     );
   });
 });

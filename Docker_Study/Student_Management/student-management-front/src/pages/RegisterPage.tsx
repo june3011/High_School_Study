@@ -1,5 +1,7 @@
+import Register from "../components/Register";
+
 const RegisterPage = () => {
-  return <div>Register 페이지 입니다.</div>;
+  return <Register />;
 };
 
 export default RegisterPage;

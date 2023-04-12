@@ -1,5 +1,7 @@
+import Modify from "../components/Modify";
+
 const ModifyPage = () => {
-  return <div>modify 페이지 입니다.</div>;
+  return <Modify />;
 };
 
 export default ModifyPage;
