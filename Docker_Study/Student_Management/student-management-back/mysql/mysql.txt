@@ -1,0 +1,5 @@
+// 도커 빌드
+docker build -t mymysql .
+
+// 도커 런 시키기 alias mysql db, 비번 설정하고 포트 정하기
+docker run -d --name mymysql --network docker-net --network-alias mysql -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=word -p 3308:3306 mymysql

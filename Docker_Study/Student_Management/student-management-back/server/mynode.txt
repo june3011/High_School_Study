@@ -1,0 +1,5 @@
+// 도커 빌드
+docker build -t mynode .
+
+// 도커 실행하기 포트 호스트 유저 비번 등 설정하기
+docker run -it -d --name mynode -p 5000:4006 --network docker-net -e MYSQL_HOST=mysql -e MYSQL_USER=root -e MYSQL_PASSWORD=password -e MYSQL_DB=word -v C:/Users/DGSW/Documents/GitHub/High_School_Study/Docker_Study/student-management/student-management-back/server/:/app mynode

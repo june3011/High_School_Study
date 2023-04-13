@@ -1,0 +1,17 @@
+# 노드버전
+FROM node:18.15.0
+
+# 작업폴더 지정
+WORKDIR /app
+
+# package.json 복사하기
+COPY package*.json /app/
+
+# npm i 실행시켜서 노드 모듈 다운
+RUN npm i
+
+# 복사
+COPY . .
+
+# 서버 실행
+CMD [ "npm", "start" ]

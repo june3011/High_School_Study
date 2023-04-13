@@ -1,0 +1,12 @@
+# 최신버전 mysql
+FROM mysql:latest
+
+# 환경변수 설정
+ENV MYSQL_ROOT_PASSWORD=password
+ENV MYSQL_DATABASE=students
+
+# init.sql 복사하기
+COPY init.sql /docker-entrypoint-initdb.d/
+
+# 3307포트
+EXPOSE 3307
