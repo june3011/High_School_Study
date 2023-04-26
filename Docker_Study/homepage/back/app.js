@@ -10,34 +10,18 @@ app.use(cors());
 
 // body parser 미들웨어 등록
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-const { Board, sequelize } = require("./board");
+const indexRouter = require("./routes/indexRouter");
+const boardRouter = require("./routes/boardRouter");
 
-// "/" 경로로 들어왔을 때 "Hello World!" 출력
-app.get("/", function (req, res) {
-  res.send("text");
-});
+app.use("/", indexRouter);
+app.use("/freeboard", boardRouter);
 
-app.get("/json", function (req, res) {
-  res.json("json");
-});
-
-app.post("/freeboard/insert", (req, res) => {
-  const { title, content, writer } = req.body;
-  Board.create({
-    title,
-    content,
-    writer,
+app.use((req, res, next) => {
+  res.status(404).json({
+    message: "요청되는 주소는 없습니다",
   });
-  res.send("insert 됨");
-});
-
-app.get("/freeboard/list", (req, res) => {
-  res.json([
-    { id: 1, title: "title" },
-    { id: 2, title: "title2222" },
-    { id: 3, title: "title3333" },
-  ]);
 });
 
 // 서버 시작
